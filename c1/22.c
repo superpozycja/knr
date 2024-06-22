@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include <unistd.h>
 #define MAXLINE 1000
-#define FOLD 20
+#define FOLD 14
 
 int my_getline(char s[], int lim)
 {
@@ -16,52 +15,38 @@ int my_getline(char s[], int lim)
 	return i;
 }
 
-void copy(char to[], char from[])
+void fold(char s[], int lim)
 {
-	int i = 0;
-	while((to[i] = from[i]) != '\0')
-		++i;
-}
+	if (lim < FOLD)
+		return;
 
-/* TODO change to a function mutating s instead of just printing
- * you can just insert newlines where a dividing space would be 
- * 
- * this one is REALLY FUCKING UGLY */
-void print_folded(char s[]) 
-{
-	int i = 0;
-	int la = 0;
-	int folded;
-	while(s[i+la] != '\0') {
-		folded = 0;
-		while(s[i+la] != '\n' && s[i+la] != '\0')
-			la++;
-		int len = la;
-		if(la >= FOLD) {
-			folded = 1;
-			while((la >= FOLD) || (s[i+la] != ' ' && s[i+la] != '\t' && la > 0))
-				la--;
-		}
-		if(la == 0) {
-			folded = 0;
-			la = len;
-		}
-		int target = i + la;
-		for(; i <= target; i++) {
-			putchar(s[i]);
-		}
-		if(folded)
-			putchar('\n');
-		la = 0;
-	}
-}
+	/* find the first space on the left and right of the fold line
+	 *
+	 * if theres a space on the left, insert a newline and recurse for the
+	 * rest of the string
+	 *
+	 * if theres no space on the left, we cant fold on this word, so go
+	 * to the next best one */
 
+	int l, r;
+	l = r = FOLD;
+	while(s[l] != ' ' && s[l] > 0)
+		l--;
+	while(s[r] != ' ' && s[r] < lim)
+		r++;
+	if(l > 0) {
+		s[l] = '\n';
+		fold(s+l, lim-l);
+	} else
+		fold(s+r, lim-r);
+}
 int main()
 {
 	int len;
 	char line[MAXLINE];
 	while((len = my_getline(line, MAXLINE)) > 0) {
-		print_folded(line);
+		fold(line, len);
+		printf("%s", line);
 	}
 	return 0;
 }
