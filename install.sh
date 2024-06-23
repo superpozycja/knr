@@ -10,5 +10,6 @@ for dir in c*/; do
             echo $(basename -s .c $file)
             cc -o "../bin/$(echo $dir | head -c 2)_$(basename -s .c $file)" $file
         done
+	cd ..
     fi
 done
