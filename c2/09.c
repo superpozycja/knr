@@ -8,7 +8,9 @@
  * if we then do x&(x-1), bits higher than the aforementioned 1 stay the same
  * in both numbers, and the lower bits are flipped in one of the numbers, and
  * given a & ~a = 0, they all get cleared. since all of them but the first 1
- * were zeroes by definition, only the 1 bit is affected - being cleared. */
+ * were zeroes by definition, only the 1 bit is affected - being cleared.
+ */
+
 int bitcount(unsigned x)
 {
 	int res = x > 0;
