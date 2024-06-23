@@ -3,9 +3,9 @@
 /* x-1 will invert every bit until the first 1 from the right inclusive.
  * the -1 will try to subtract from the first bit, and will 'borrow' from the
  * higher bit until it encounters a 1, then all of the bits before the 1 will
- * be flipped to 1, and that one that stopped the domino effect will become 0.
+ * be flipped to 1, and that 1 that stopped the domino effect will become 0.
  *
- * if we then and these, bits higher than the aforementioned 1 stay the same
+ * if we then do x&(x-1), bits higher than the aforementioned 1 stay the same
  * in both numbers, and the lower bits are flipped in one of the numbers, and
  * given a & ~a = 0, they all get cleared. since all of them but the first 1
  * were zeroes by definition, only the 1 bit is affected - being cleared. */
