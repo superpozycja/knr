@@ -8,7 +8,7 @@ for dir in c*/; do
         for file in ./*.c; do
             echo $file
             echo $(basename -s .c $file)
-            cc -o "../bin/$(echo $dir | head -c 2)_$(basename -s .c $file)" $file
+            cc -o "../bin/$(echo $dir | head -c 2)_$(basename -s .c $file)" $file -lm
         done
 	cd ..
     fi
