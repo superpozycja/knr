@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-/* this is the sexiest function i have wrote so far in this */
+/* this is the sexiest function i have written so far in this */
 void reverse(char s[])
 {
 	int i = 0;
