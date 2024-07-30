@@ -1,6 +1,7 @@
 /* stolen from [1], i got too angry at this, skill issue on my part 
+ * HOWEVER i refactored the code a bit not to feel too guilty for skipping this
  *
- * [1] https://clc-wiki.net/wiki/K%26R2_solutions:Chapter_5:Exercise_18
+ * [1] https://clc-wiki.net/wiki/K%26R2_solutions:Chapter_5:Exercise_19
  */
 
 #include <stdio.h>
@@ -108,17 +109,32 @@ int dirdcl(void)
 
 int main()
 {
+	int type;
+	char temp[MAXTOKEN];
+	char p[MAXTOKEN];
 	while (gettoken() != EOF) {
-		strcpy(datatype, token);
-		out[0] = '\0';
-		if (dcl() == 0 && tokentype == '\n') {
-			printf("%s: %s %s\n", name, out, datatype);
-		}
-		else {
-			printf("syntax error\n");
-			for (int c = 0; c != '\n' && c != EOF; )
-				if ((c = getch()) == EOF)
-					ungetch(c);
-		}
+		strcpy(out, token);
+		while ((type = gettoken()) != '\n')
+			if (type == PARENS || type == BRACKETS) {
+				strcat(out, token);
+			} else if (type == '*') {
+				int pcount = 1;
+				char c;
+				while ((c = getch()) == '*' || c == ' ')
+					if (c == '*' && pcount < MAXTOKEN - 1)
+						pcount++;
+				ungetch(c);
+				memset(p, '*', pcount);
+				p[pcount] = '\0';
+				sprintf(temp, "(%s%s)", p, out);
+				strcpy(out, temp);
+			} else if (type == NAME) {
+				sprintf(temp, "%s %s", token, out);
+				strcpy(out, temp);
+			} else {
+				printf("invalid input at %s\n", token);
+			}
+		printf("%s\n", out);
 	}
+	return 0;
 }
