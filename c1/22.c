@@ -1,6 +1,6 @@
 #include <stdio.h>
 #define MAXLINE 1000
-#define FOLD 14
+#define FOLD 20
 
 int my_getline(char s[], int lim)
 {
